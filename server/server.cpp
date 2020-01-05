@@ -140,20 +140,7 @@ int main()
 	else {
 		printf("监听网络端口成功...\n");
 	}
-	// 4 accept 等待接受客户端连接
-	sockaddr_in clientAddr = {};
-	int nAddrLen = sizeof(sockaddr_in);
-	SOCKET _cSock = INVALID_SOCKET;
 	
-
-	_cSock = accept(_sock, (sockaddr*)&clientAddr, &nAddrLen);
-	if (INVALID_SOCKET == _cSock)
-	{
-		printf("错误,接受到无效客户端SOCKET...\n");
-	}
-	printf("新客户端加入：socket = %d,IP = %s \n", (int)_cSock, inet_ntoa(clientAddr.sin_addr));
-
-
 	while (true)
 	{
 		fd_set fdRead;
@@ -175,7 +162,7 @@ int main()
 		// nfds 是一个整数值， 是指fd_set集合中所有描述符（socket)的范围,而不是数量
 		// 即是所有文件描述符的最大值+1 在windows中这个参数可以写0
 		timeval t = { 0 ,0};
-		int ret = select(_sock + 1, &fdRead, &fdWrite, &fdExp, &t);
+		int ret = select(_sock + 1, &fdRead, &fdWrite, &fdExp, NULL);
 		if(ret < 0)
 		{
 			printf("select end\n");
@@ -185,8 +172,9 @@ int main()
 
 		if(FD_ISSET(_sock, &fdRead))
 		{
+			printf("get info\n");
 			FD_CLR(_sock, &fdRead);
-			sockaddr_in clientAddr = { 0 };
+			sockaddr_in clientAddr = {};
 			int nAddrlen = sizeof(sockaddr_in);
 			SOCKET _cSock = INVALID_SOCKET;
 			_cSock = accept(_sock, (sockaddr*)&clientAddr, &nAddrlen);
@@ -209,7 +197,7 @@ int main()
 				}
 			}
 		}
-
+		//printf("=================\n");
 	}
 
 	//

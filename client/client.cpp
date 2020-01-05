@@ -113,9 +113,11 @@ int main()
 			Login login;
 			strcpy(login.userName, "lyd");
 			strcpy(login.PassWord, "lydmima");
+			printf("send login\n");
 			send(_sock, (const char *)&login, sizeof(login), 0);
 			// 接收服务器返回的数据
 			LoginResult loginRet = {};
+			printf("recv login\n");
 			recv(_sock, (char*)&loginRet, sizeof(loginRet), 0);
 			printf("LoginResult: %d \n", loginRet.result);
 		}
