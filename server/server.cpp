@@ -161,8 +161,8 @@ int main()
 		}
 		// nfds 是一个整数值， 是指fd_set集合中所有描述符（socket)的范围,而不是数量
 		// 即是所有文件描述符的最大值+1 在windows中这个参数可以写0
-		timeval t = { 0 ,0};
-		int ret = select(_sock + 1, &fdRead, &fdWrite, &fdExp, NULL);
+		timeval t = { 1 ,0};//查询超时时间，如不设置默认阻塞
+		int ret = select(_sock + 1, &fdRead, &fdWrite, &fdExp, &t);
 		if(ret < 0)
 		{
 			printf("select end\n");
@@ -197,7 +197,7 @@ int main()
 				}
 			}
 		}
-		//printf("=================\n");
+		printf("=================\n");
 	}
 
 	//
